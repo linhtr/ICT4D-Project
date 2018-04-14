@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml">
+ 	<menu id="welcomeMenu" dtmf="true"> 		
+		<prompt>
+			Hello farmer! Welcome to our chicken vaccination programm. Are you already registered?
+			Press 1, for yes.
+ 			Press 2, for no.
+		</prompt>
+		<choice next="#yesaccount"/>
+		<choice next="#noaccount"/>
+	</menu>	
+
+	<form id="yesaccount" dtmf="true">
+		<field name="login">
+			<prompt>
+				To log into your profile, please say your first and last name.
+			</prompt>
+			<!-- Uiteindelijk moet dit van een externe DB komen met user profiles -->
+			<grammar  version="1.0" mode="voice" type="application/srgs+xml" tag-format="semantics/1.0" root="top">
+		      	<rule id="top">
+		        	<one-of>
+		         		<item>John Williams</item>
+		         		<item>Kate Smith</item>
+		        	</one-of>
+		      	</rule>
+		    </grammar>
+			<filled>
+				<prompt>
+					You're now logged in.
+					<goto nextitem="menu_selection" />
+				</prompt>
+			</filled>
+		</field>
+		<field name="menu_selection">
+			<prompt>
+ 				Please pick your menu option.
+ 				Press 1, if you would like to enter a date of newborn chickens.
+ 				Press 2, if you would like to make a notification of a diseased chicken.
+ 				Press 3, if you would like to enter the date of the first vaccination.
+ 			</prompt>
+ 			<grammar version="1.0" root="top" mode="dtmf">
+		        <rule id="top">
+					<one-of>
+						<item>1</item>
+						<item>2</item>
+						<item>3</item>
+					</one-of>
+				</rule>
+		    </grammar>
+ 			<filled>
+ 				<script> <![CDATA[
+	                var next_destination = "";
+	                switch (menu_selection){
+
+	                case "1" :
+	                	next_destination = "#newborn";
+	                    break;
+	                    
+	                case "2" :
+	                    next_destination = "#disease";
+	                    break;
+	                    
+	                case "3" :
+	                    next_destination = "#vaccination";
+	                    break;
+	                }
+	               	]]> </script>
+	            <goto expr="next_destination"/>
+ 			</filled>
+		</field>
+	</form>
+
+	<form id="newborn">
+		<field name="newborns">
+			<prompt>
+				How many newborn chickens do you have? Type the number on the keyboard.
+			</prompt>
+			<!-- Moet nog verandert worden naar meerdere cijfers input en opgeslagen worden -->
+			<grammar version="1.0" root="top" mode="dtmf">
+		        <rule id="top">
+					<one-of>
+						<item>0</item>
+						<item>1</item>
+						<item>2</item>
+						<item>3</item>
+						<item>4</item>
+						<item>5</item>
+						<item>6</item>
+						<item>7</item>
+						<item>8</item>
+						<item>9</item>
+					</one-of>
+				</rule>
+			</grammar>
+			<filled>
+				<goto nextitem="birth_date" />
+			</filled>
+		</field>
+		<field name="birth_date">
+			<prompt>
+				Fill in the birth date of your new born chickens.
+			</prompt>
+			<!-- Moet nog verandert worden naar meerdere cijfers input en opgeslagen worden -->
+			<grammar version="1.0" root="top" mode="dtmf">
+	        	<rule id="top">
+					<one-of>
+						<item>0</item>
+						<item>1</item>
+						<item>2</item>
+						<item>3</item>
+						<item>4</item>
+						<item>5</item>
+						<item>6</item>
+						<item>7</item>
+						<item>8</item>
+						<item>9</item>
+					</one-of>
+				</rule>
+			</grammar>
+			<filled>
+				<prompt>
+					Thank you. Your information has been added to your profile.
+				</prompt>
+			</filled>
+		</field>
+	</form>
+
+	<form id="disease">
+		<field name="disease_field">
+			<prompt>
+				What disease would you like to report?
+				Press 1 for Newcastle Disease.
+				Press 2 for Chickenpox.
+				Press 3 for Infectious Bronchitis.
+				Press 4 for Gomburu.
+			</prompt>
+			<grammar version="1.0" root="top" mode="dtmf">
+		        <rule id="top">
+					<one-of>
+						<item>1</item>
+						<item>2</item>
+						<item>3</item>
+						<item>4</item>
+					</one-of>
+				</rule>
+			</grammar>
+			<!-- Informatie moet nog opgeslagen worden -->
+			<filled>
+				<prompt>
+					Thank you for reporting. We will make a note of your report.
+				</prompt>
+			</filled>
+		</field>
+	</form>
+
+	<form id="vaccination">
+		<field name="vaccination_field">
+			<prompt>
+				Enter the date of the first vaccination of your chickens on the keyboard.
+			</prompt>
+			<!-- Moet nog verandert worden naar meerdere cijfers input en opgeslagen worden -->
+			<grammar version="1.0" root="top" mode="dtmf">
+	        	<rule id="top">
+					<one-of>
+						<item>0</item>
+						<item>1</item>
+						<item>2</item>
+						<item>3</item>
+						<item>4</item>
+						<item>5</item>
+						<item>6</item>
+						<item>7</item>
+						<item>8</item>
+						<item>9</item>
+					</one-of>
+				</rule>
+			</grammar>
+			<filled>
+				<prompt>
+					Thank you. Your information has been added to your profile.
+				</prompt>
+			</filled>
+		</field>
+	</form>
+	
+
+	<form id="noaccount">
+		<field name="register">
+			<prompt>
+				Let's make an account.
+	 			Please say your first and last name.
+			</prompt>
+			<!-- Werkt nog niet, uitzoeken hoe je voice messages kan opslaan -->
+			<subdialog name="result" src="http://another.example/#getssn"> 
+		        <param name="firstname" expr="document.first"/> 
+		        <param name="lastname" expr="document.last"/> 
+		        <filled> 
+		        	<prompt>
+		        	Thank you. You just have created a new account.
+		        	</prompt>
+		            <submit namelist="result.ssn" next="http://myservice.example/cgi-bin/process"/> 
+		        </filled> 
+		    </subdialog>
+		</field>
+	</form>
+
+</vxml>
