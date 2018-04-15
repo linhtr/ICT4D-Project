@@ -35,7 +35,7 @@
 			<prompt>
  				Please pick your menu option.
  				Press 1, if you would like to enter a date of newborn chickens.
- 				Press 2, if you would like to make a notification of a diseased chicken.
+ 				Press 2, if you would like to make a notification of diseased chickens.
  				Press 3, if you would like to enter the date of the first vaccination.
  			</prompt>
  			<grammar version="1.0" root="top" mode="dtmf">
@@ -53,15 +53,15 @@
 	                switch (menu_selection){
 
 	                case "1" :
-	                	next_destination = "#newborn";
+	                	next_destination = "#newborns";
 	                    break;
 	                    
 	                case "2" :
-	                    next_destination = "#disease";
+	                    next_destination = "#disease_notification";
 	                    break;
 	                    
 	                case "3" :
-	                    next_destination = "#vaccination";
+	                    next_destination = "#vaccination_notification";
 	                    break;
 	                }
 	               	]]> </script>
@@ -70,7 +70,7 @@
 		</field>
 	</form>
 
-	<form id="newborn">
+	<form id="newborns">
 		<field name="newborns">
 			<prompt>
 				How many newborn chickens do you have? Type the number on the keyboard.
@@ -125,14 +125,14 @@
 		</field>
 	</form>
 
-	<form id="disease">
-		<field name="disease_field">
+	<form id="disease_notification">
+		<field name="disease">
 			<prompt>
 				What disease would you like to report?
-				Press 1 for Newcastle Disease.
-				Press 2 for Chickenpox.
-				Press 3 for Infectious Bronchitis.
-				Press 4 for Gomburu.
+				Press 1, for Newcastle Disease.
+				Press 2, for Chickenpox.
+				Press 3, for Infectious Bronchitis.
+				Press 4, for Gomburu.
 			</prompt>
 			<grammar version="1.0" root="top" mode="dtmf">
 		        <rule id="top">
@@ -147,16 +147,70 @@
 			<!-- Informatie moet nog opgeslagen worden -->
 			<filled>
 				<prompt>
+					<goto nextitem="infected_chickens" />
+				</prompt>
+			</filled>
+		</field>
+		<field name="infected_chickens">
+			<prompt>
+				How many of your chickens are infected with this disease? Enter a number.
+			</prompt>
+			<!-- Moet nog verandert worden naar meerdere cijfers input en opgeslagen worden -->
+			<grammar version="1.0" root="top" mode="dtmf">
+	        	<rule id="top">
+					<one-of>
+						<item>0</item>
+						<item>1</item>
+						<item>2</item>
+						<item>3</item>
+						<item>4</item>
+						<item>5</item>
+						<item>6</item>
+						<item>7</item>
+						<item>8</item>
+						<item>9</item>
+					</one-of>
+				</rule>
+			</grammar>
+			<filled>
+				<prompt>
 					Thank you for reporting. We will make a note of your report.
 				</prompt>
 			</filled>
 		</field>
 	</form>
 
-	<form id="vaccination">
-		<field name="vaccination_field">
+	<form id="vaccination_notification">
+		<field name="chickens_vaccinated">
 			<prompt>
-				Enter the date of the first vaccination of your chickens on the keyboard.
+				How many newborn chickens did you vaccinate? Enter a number.
+			</prompt>
+			<!-- Moet nog verandert worden naar meerdere cijfers input en opgeslagen worden -->
+			<grammar version="1.0" root="top" mode="dtmf">
+	        	<rule id="top">
+					<one-of>
+						<item>0</item>
+						<item>1</item>
+						<item>2</item>
+						<item>3</item>
+						<item>4</item>
+						<item>5</item>
+						<item>6</item>
+						<item>7</item>
+						<item>8</item>
+						<item>9</item>
+					</one-of>
+				</rule>
+			</grammar>
+			<filled>
+				<prompt>
+					<goto nextitem="vaccination_date" />
+				</prompt>
+			</filled>
+		</field>
+		<field name="vaccination_date">
+			<prompt>
+				When did you vaccinate this batch of chickens? Enter the date of the first vaccination of your chicken batch.
 			</prompt>
 			<!-- Moet nog verandert worden naar meerdere cijfers input en opgeslagen worden -->
 			<grammar version="1.0" root="top" mode="dtmf">
